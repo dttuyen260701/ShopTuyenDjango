@@ -77,7 +77,7 @@
                         <h3><a href="{% url 'product:product' id_pro=sanpham.id%}">{{sanpham.tensanpham}}</a></h3>
                         <p class="price"> 
                             {% if sanpham.sale == 1 %}
-                            <del>{{sanpham.giasanpham}}k </del> {{pri}}kVND
+                            <del>{{sanpham.giasanpham}}k </del> {{pri}}k VND
                             {% else %}
                             {{sanpham.giasanpham}}k VND
                             {% endif %}

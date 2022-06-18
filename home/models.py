@@ -187,7 +187,14 @@ class Donhang(models.Model):
     status = models.IntegerField()
     
     def __str__(self):
-        return "KH: " + str(self.idkhachhang.first_name) + "-Tong: " + str(self.tong)
+        trang_thai = ""
+        if self.status== 0:
+            trang_thai = "Gio Hang"
+        if self.status== 1:
+            trang_thai = "Dang Giao"
+        if self.status== 2:
+            trang_thai = "Da nhan"
+        return "KH: " + str(self.idkhachhang.first_name) + "-Tong: " + str(self.tong) + "- Trang thai: " + trang_thai
     class Meta:
         managed = False
         db_table = 'donhang'
