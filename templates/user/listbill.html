@@ -1,0 +1,127 @@
+{% extends 'index.html' %} {% load static %} 
+{% block title %} Đơn hàng đã đặt {% endblock title %} 
+{% block style %}
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="all,follow" />
+<!-- Bootstrap CSS-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}"
+/>
+<!-- Font Awesome CSS-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/font-awesome/css/font-awesome.min.css'%}"
+/>
+<!-- Google fonts - Roboto -->
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700"
+/>
+<!-- owl carousel-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/owl.carousel/assets/owl.carousel.css'%}"
+/>
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/owl.carousel/assets/owl.theme.default.css'%}"
+/>
+<!-- theme stylesheet-->
+<link
+  rel="stylesheet"
+  href="{% static 'style/style.default.css'%}"
+  id="theme-stylesheet"
+/>
+<!-- Custom stylesheet - for your changes-->
+<link rel="stylesheet" href="{% static 'style/custom.css'%}" />
+<!-- Leaflet CSS - For the map-->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"
+/>
+<!-- Favicon-->
+<link rel="shortcut icon" href="{% static 'image/favicon.png'%}" />
+<!-- Tweaks for older IEs--><!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script
+><![endif]-->
+{% endblock style %}
+<!-- navbar-->
+{% block search%} {% endblock search%} {% block content %}
+<div id="all">
+  <div id="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3">
+          <!--
+                *** CUSTOMER MENU ***
+                _________________________________________________________
+                -->
+          <div class="card sidebar-menu">
+            <div class="card-header">
+              <h3 class="h4 card-title">Quản lí tài khoản cá nhân</h3>
+            </div>
+            <div class="card-body">
+              <ul class="nav nav-pills flex-column">
+                <a href="{% url 'user:user'%}" class="nav-link"
+                  ><i class="fa fa-user"></i> Tài khoản của tôi</a
+                >
+                <a href="{% url 'user:listbill'%}" class="nav-link active"
+                  ><i class="fa fa-list"></i> Đơn hàng đã đặt</a
+                >
+                <a href="{% url 'home:logout'%}" class="nav-link"
+                  ><i class="fa fa-sign-out"></i> Đăng xuất</a
+                >
+              </ul>
+            </div>
+          </div>
+          <!-- /.col-lg-3-->
+          <!-- *** CUSTOMER MENU END ***-->
+        </div>
+        
+        <div id="customer-orders" class="col-lg-9">
+            <div class="box">
+              <h1>Đơn hàng của tôi</h1>
+              <p class="lead">Tất cả đơn hàng của bạn ở đây.</p>
+              <p class="text-muted">Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng <a href="{% url 'contact:contact'%}">liên hệ với chúng tôi</a>, dịch vụ chăm sóc khách hàng của chúng tôi làm việc 24/7.</p>
+              <hr>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Mã đơn hàng</th>
+                      <th>Ngày đặt hàng</th>
+                      <th>Tổng</th>
+                      <th>Trạng thái</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for bill in listBill %}
+                    <tr>
+                      <th>#{{bill.id}}</th>
+                      <td>{{bill.date}}</td>
+                      <td>{{bill.tong}}kVND</td>
+                      {% if bill.status == 1 %}
+                      <td><span class="badge badge-info">Đang giao</span></td>
+                      {% endif %}
+                      {% if bill.status == 2 %}
+                      <td><span class="badge badge-success">Đã nhận</span></td>
+                      {% endif %}
+                      {% if bill.status == 3 %}
+                      <td><span class="badge badge-danger">Đã hủy</span></td>
+                      {% endif %}
+                      <td><a href="{% url 'user:billdetails' idBill=bill.id%}" class="btn btn-primary btn-sm">Xem chi tiết</a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

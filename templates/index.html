@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}Trang Chủ{% endblock title %}</title>
+    {% block style %}
+      <meta name="description" content="">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="robots" content="all,follow">
+      <!-- Bootstrap CSS-->
+      <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}">
+      <!-- Font Awesome CSS-->
+      <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css'%}">
+      <!-- Google fonts - Roboto -->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700">
+      <!-- owl carousel-->
+      <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.carousel.css'%}">
+      <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.theme.default.css'%}">
+      <!-- theme stylesheet-->
+      <link rel="stylesheet" href="{% static 'style/style.default.css'%}" id="theme-stylesheet">
+      <!-- Custom stylesheet - for your changes-->
+      <link rel="stylesheet" href="{% static 'style/custom.css'%}">
+      <!-- Favicon-->
+      <link rel="shortcut icon" href="{% static 'image/favicon.png'%}">
+      <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    {% endblock style %}
+  </head>
+  <body>
+    <!-- navbar-->
+    <header class="header mb-5">
+      <!--
+      *** TOPBAR ***
+      _________________________________________________________
+      -->
+      <div id="top">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 offer mb-3 mb-lg-0"><a href="{% url 'category:saling' sx=0%} " class="btn btn-success btn-sm">Khuyến mãi hôm nay!!!</a><a href="{% url 'category:saling' sx=0%}" class="ml-1">Nhận giảm giá {{app.offer_day}}% với các sản phẩm hôm nay!!</a></div>
+            <div class="col-lg-6 text-center text-lg-right">
+              <ul class="menu list-inline mb-0">
+                {% if request.user.is_authenticated %}
+                <li class="list-inline-item"><a href="{% url 'user:user'%}">Chào {{request.user.first_name}}</a></li>
+                <li class="list-inline-item"><a href="{% url 'home:logout'%}">Đăng xuất</a></li>
+                {% else %}
+                <li class="list-inline-item"><a href="#" data-toggle="modal" data-target="#login-modal">Đăng Nhập</a></li>
+                <li class="list-inline-item"><a href="{% url 'home:register'%}">Đăng ký</a></li>
+                {% endif %}
+                <li class="list-inline-item"><a href="{% url 'contact:contact'%}">Liên hệ với chúng tôi</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true" class="modal fade">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Đăng nhập</h5>
+                <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+              </div>
+              <div class="modal-body">
+                <form action="{% url 'home:login'%}" method="post">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <input id="email-modal" name="username" type="email" placeholder="username" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <input id="password-modal" name="password" type="password" placeholder="password" class="form-control">
+                  </div>
+                  <p class="text-center">
+                    <button class="btn btn-primary"><i class="fa fa-sign-in"></i>Đăng nhập</button>
+                  </p>
+                </form>
+                <p class="text-center text-muted">Chưa có tài khoản?</p>
+                <p class="text-center text-muted"><a href="{% url 'home:register'%}"><strong>Đăng ký ngay</strong></a>Chỉ mất của bạn 1 phút sẽ cho bạn nhiều điều đặc biệt và hơn thế nữa!!!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- *** TOP BAR END ***-->
+        
+        
+      </div>
+      <nav class="navbar navbar-expand-lg">
+        <div class="container"><a href="{% url 'home:home'%}" class="navbar-brand home"><img src="{{app.app_logo}}" 
+          style = "
+            height:60px;
+          "
+          alt="" class="d-none d-md-inline-block"><img src="{{app.app_logo}}" alt="Obaju logo" class="d-inline-block d-md-none"><span class="sr-only"></span></a>
+          <div class="navbar-buttons">
+            <button type="button" data-toggle="collapse" data-target="#navigation" class="btn btn-outline-secondary navbar-toggler"><span class="sr-only"></span><i class="fa fa-align-justify"></i></button>
+            <button type="button" data-toggle="collapse" data-target="#search" class="btn btn-outline-secondary navbar-toggler"><span class="sr-only"></span><i class="fa fa-search"></i></button><a href="basket.html" class="btn btn-outline-secondary navbar-toggler"><i class="fa fa-shopping-cart"></i></a>
+          </div>
+          <div id="navigation" class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item"><a href="{% url 'home:home'%}" 
+                {% if top_trend != null %}
+                  class="nav-link active"
+                {% else %}
+                  class="nav-link"
+                {% endif %}
+              >Trang Chủ</a></li>
+              <li class="nav-item dropdown menu"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" 
+                {% if typ == "1" %}
+                  class="dropdown-toggle nav-link active"
+                {% else %}
+                  class="dropdown-toggle nav-link"
+                {% endif %}
+              >Trang điểm<b class="caret"></b></a>
+                <ul class="dropdown-menu megamenu">
+                  <li>
+                    <div class="row">
+                      <ul class="list-unstyled mb-3">
+                        <h4>Các Mục</h4>
+                        {% for trangdiem in trangdiems %}
+                          <li class="nav-item"><h4><a href="{% url 'category:category' typ=1 cate=trangdiem.id sx=0%}" class="nav-link">{{trangdiem.tenloaisanpham}}</a></h4></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown menu"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200" 
+                {% if typ == "2" %}
+                  class="dropdown-toggle nav-link active"
+                {% else %}
+                  class="dropdown-toggle nav-link"
+                {% endif %}class="dropdown-toggle nav-link"
+              >Dưỡng da<b class="caret"></b></a>
+                <ul class="dropdown-menu megamenu">
+                  <li>
+                    <div class="row">
+                      <ul class="list-unstyled mb-3">
+                        <h4>Các Mục</h4>
+                        {% for duongda in duongdas %}
+                          <li class="nav-item"><h4><a href="{% url 'category:category' typ=2 cate=duongda.id sx=0%}" class="nav-link">{{duongda.tenloaisanpham}}</a></h4></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item dropdown menu"><a href="#" data-toggle="dropdown" data-hover="dropdown" data-delay="200"  
+                {% if typ == "3" %}
+                  class="dropdown-toggle nav-link active"
+                {% else %}
+                  class="dropdown-toggle nav-link"
+                {% endif %}
+              >Thực phẩm chức năng<b class="caret"></b></a>
+                <ul class="dropdown-menu megamenu">
+                  <li>
+                    <div class="row">
+                      <ul class="list-unstyled mb-3">
+                        <h4>Các Mục</h4>
+                        {% for tpcn in tpcns %}
+                          <li class="nav-item"><h4><a href="{% url 'category:category' typ=3 cate=tpcn.id sx=0%}" class="nav-link">{{tpcn.tenloaisanpham}}</a></h4></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              {% if request.user.is_superuser %}
+                <li class="nav-item "><a href="/admin" target="blank" class="nav-link">
+                    Quản lí website
+                  <b class="caret"></b></a>
+                </li>
+              {% endif %}
+            </ul>
+            <div class="navbar-buttons d-flex justify-content-end">
+              <!-- /.nav-collapse-->
+            {% if top_trend == null %}
+              <div id="search-not-mobile" class="navbar-collapse collapse"></div><a data-toggle="collapse" href="#search" class="btn navbar-btn btn-primary d-none d-lg-inline-block"><span class="sr-only">Tìm kiếm </span><i class="fa fa-search"></i></a>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+              <div id="basket-overview" class="navbar-collapse collapse d-none d-lg-block"><a href="{% url 'user:cart'%}" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span>{{cart_sl}} Sản phẩm</span></a></div>
+            {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div id="search" class="collapse">
+        <div class="container">
+          {% block search%}
+            <form role="search" class="ml-auto">
+              <div class="input-group">
+                <input type="text" placeholder="Search" class="form-control">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </form>
+          {% endblock search%}
+        </div>
+      </div>
+    </header>
+    {% block content %}
+      <div id="all">
+        <div id="content">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <div id="main-slider" class="owl-carousel owl-theme">
+                  <div class="item"><img src="{{app.slide_1}}" alt="" class="img-fluid"></div>
+                  <div class="item"><img src="{{app.slide_2}}" alt="" class="img-fluid"></div>
+                  <div class="item"><img src="{{app.slide_3}}" alt="" class="img-fluid"></div>
+                  <div class="item"><img src="{{app.slide_4}}" alt="" class="img-fluid"></div>
+                </div>
+                <!-- /#main-slider-->
+              </div>
+            </div>
+          </div>
+          <!--
+          *** HOT PRODUCT SLIDESHOW ***
+          _________________________________________________________
+          -->
+          <div id="hot">
+            <div class="box py-4">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h2 class="mb-0">Sản Phẩm Mới</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="container">
+              <div class="product-slider owl-carousel owl-theme">
+                {% for sp,pri in top_trend %}
+                  <div class="item">
+                    <div class="product">
+                      <div class="flip-container">
+                        <div class="flipper">
+                          <div class="front"><a href="{% url 'product:product' id_pro=sp.id%}"><img style = "height: 25vh; width: 100%;" src="{{sp.hinhanhsanpham}}" alt="" class="img-fluid"></a></div>
+                          <div class="back"><a href="{% url 'product:product' id_pro=sp.id%}"><img style = "height: 25vh; width: 100%;" src="{{sp.hinhanhsanpham}}" alt="" class="img-fluid"></a></div>
+                        </div>
+                      </div><a href="{% url 'product:product' id_pro=sp.id%}" class="invisible"><img style = "height: 25vh;" src="{{sp.hinhanhsanpham}}" alt="" class="img-fluid"></a>
+                      <div class="text">
+                        <h3><a href="{% url 'product:product' id_pro=sp.id%}">{{sp.tensanpham}}</a></h3>
+                        <p class="price"> 
+                          {% if sp.sale == 1 %}
+                            <del>{{sp.giasanpham}}k </del> {{pri}}k VND
+                          {% else %}
+                            {{sp.giasanpham}}k VND
+                          {% endif %}
+                        </p>
+                      </div>
+                      <!-- /.ribbon-->
+                      <div class="ribbon sale">
+                        <div class="theribbon">NEW</div>
+                        <div class="ribbon-background"></div>
+                      </div>
+                      <!-- /.text-->
+                      {% if sp.sale == 1 %}
+                        <div class="ribbon new">
+                          <div class="theribbon">SALE</div>
+                          <div class="ribbon-background"></div>
+                        </div>
+                      {% endif %}
+                    </div>
+                    <!-- /.product-->
+                  </div>
+                {% endfor %}
+                <!-- /.product-slider-->
+              </div>
+              <!-- /.container-->
+            </div>
+            <!-- /#hot-->
+            <!-- *** HOT END ***-->
+          </div>
+          <!--
+          *** ADVANTAGES HOMEPAGE ***
+          _________________________________________________________
+          -->
+          <div id="advantages">
+            <div class="container">
+              <div class="row mb-4">
+                <div class="col-md-4">
+                  <div class="box clickable d-flex flex-column justify-content-center mb-0 h-100">
+                    <div class="icon"><i class="fa fa-heart"></i></div>
+                    <h3><a href="{% url 'category:saling' sx=0%}">Sản phẩm đang giảm giá</a></h3>
+                    <p class="mb-0">Luôn được mọi người yêu thích.</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="box clickable d-flex flex-column justify-content-center mb-0 h-100">
+                    <div class="icon"><i class="fa fa-tags"></i></div>
+                    <h3><a href="{% url 'category:category' typ=1 cate=0 sx=0%}">Khám phá các sản phẩm của chúng tôi</a></h3>
+                    <p class="mb-0">Cùng yêu bản thân hơn bằng những sản phẩm chăm sóc cho chính mình</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="box clickable d-flex flex-column justify-content-center mb-0 h-100">
+                    <div class="icon"><i class="fa fa-thumbs-up"></i></div>
+                    <h3><a href="{% url 'contact:contact'%}">Đóng góp ý kiến cho chúng tôi</a></h3>
+                    <p class="mb-0">Cho chúng tôi những điều bạn thích và chưa thích để giúp chúng tôi phục vụ bạn tốt hơn.</p>
+                  </div>
+                </div>
+              </div>
+              <!-- /.row-->
+            </div>
+            <!-- /.container-->
+          </div>
+          <!-- /#advantages-->
+          <!-- *** ADVANTAGES END ***-->
+        </div>
+      </div>
+    {% endblock content %}
+    <!--
+    *** FOOTER ***
+    _________________________________________________________
+    -->
+    <div id="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-6">
+            <h4 class="mb-3">Shop</h4>
+            <ul class="list-unstyled">
+              <li><a href="https://www.facebook.com/Tuyen2671/">Về chúng tôi</a></li>
+              <li><a href="{% url 'contact:faq'%}">Câu hỏi thường gặp</a></li>
+            </ul>
+            <hr>
+            <h4 class="mb-3">Dành cho bạn</h4>
+            {% if  request.user.is_authenticated == False%}
+            <ul class="list-unstyled">
+              <li><a href="#" data-toggle="modal" data-target="#login-modal">Đăng nhập</a></li>
+              <li><a href="{% url 'home:register'%}">Đăng ký</a></li>
+            </ul>
+            {% else %}
+              <a href="{% url 'user:user'%}">Tài khoản của tôi</a>
+            {% endif %}
+          </div>
+          <!-- /.col-lg-3-->
+          <div class="col-lg-3 col-md-6">
+            <h4 class="mb-3">Các loại sản phẩm</h4>
+            <ul class="list-unstyled">
+              <li><a href="{% url 'category:category' typ=1 cate=0 sx=0%}">Trang điểm</a></li>
+              <li><a href="{% url 'category:category' typ=2 cate=0 sx=0%}">Dưỡng da</a></li>
+              <li><a href="{% url 'category:category' typ=3 cate=0 sx=0%}">Thực phẩm chức năng</a></li>
+            </ul>
+          </div>
+          <!-- /.col-lg-3-->
+          <div class="col-lg-3 col-md-6">
+            <h4 class="mb-3">Địa chỉ của chúng tôi</h4>
+            <p><strong>Đại học Bách Khoa </strong><p>{{app.dia_chi}}<br>{{app.phuong}}<br>{{app.quan}}<br>{{app.thanhpho}}<br><strong>{{app.quociga}}</strong></p><a href="{% url 'contact:contact'%}">Đến trang liên lạc</a>
+            <hr class="d-block d-md-none">
+          </div>
+          <!-- /.col-lg-3-->
+          <div class="col-lg-3 col-md-6">
+            <h4 class="mb-3">Kết nối với chúng tôi</h4>
+            <p class="social">
+              <a href="https://www.facebook.com/" class="facebook external"><i class="fa fa-facebook"></i></a>
+              <a href="https://twitter.com/" class="twitter external"><i class="fa fa-twitter"></i></a>
+              <a href="https://www.instagram.com/" class="instagram external"><i class="fa fa-instagram"></i></a>
+              <a href="https://www.google.com/" class="gplus external"><i class="fa fa-google-plus"></i></a>
+              <a href="https://github.com/dttuyen260701" class="git external"><i class="fa fa-envelope"></i></a>
+            </p>
+          </div>
+          <!-- /.col-lg-3-->
+        </div>
+        <!-- /.row-->
+      </div>
+      <!-- /.container-->
+    </div>
+    <!-- /#footer-->
+    <!-- *** FOOTER END ***-->
+    
+    <!-- JavaScript files-->
+    <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'vendor/jquery.cookie/jquery.cookie.js'%}"> </script>
+    <script src="{% static 'vendor/owl.carousel/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'vendor/owl.carousel2.thumbs/owl.carousel2.thumbs.js'%}"></script>
+    <script src="{% static 'js/front.js'%}"></script>
+  </body>
+</html>

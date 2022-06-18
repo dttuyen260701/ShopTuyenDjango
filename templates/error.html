@@ -1,0 +1,59 @@
+{% extends 'index.html' %} {% load static %} {% block title %} Đăng ký 
+{% endblock title %} {% block style %}
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="all,follow" />
+<!-- Bootstrap CSS-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}"
+/>
+<!-- Font Awesome CSS-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/font-awesome/css/font-awesome.min.css'%}"
+/>
+<!-- Google fonts - Roboto -->
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700"
+/>
+<!-- owl carousel-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/owl.carousel/assets/owl.carousel.css'%}"
+/>
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/owl.carousel/assets/owl.theme.default.css'%}"
+/>
+<!-- theme stylesheet-->
+<link
+  rel="stylesheet"
+  href="{% static 'style/style.default.css'%}"
+  id="theme-stylesheet"
+/>
+<!-- Custom stylesheet - for your changes-->
+<link rel="stylesheet" href="{% static 'style/custom.css'%}" />
+<!-- Favicon-->
+<link rel="shortcut icon" href="{% static 'iamge/favicon.png'%}" />
+{% endblock style %}
+<!-- navbar-->
+{% block search%} {% endblock search%} {% block content %}
+
+<div id="all">
+    <div id="content">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6">
+                <h1>{{error}}</h1>
+                {% if cd %}
+                  <h2><a href="{% url 'home:home' %}">Trang chủ</a></h2>
+                {% else %}
+                  <h2><a href="javascript:history.back()">Trở lại</a></h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

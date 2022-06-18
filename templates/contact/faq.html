@@ -1,0 +1,91 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} 
+    FAQ
+{% endblock title %} 
+
+{% block style %}
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css'%}">
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700">
+    <!-- owl carousel-->
+    <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.carousel.css'%}">
+    <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.theme.default.css'%}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static 'style/style.default.css'%}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static 'style/custom.css'%}">
+    <!-- Leaflet CSS - For the map-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static 'image/favicon.png'%}">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+{% endblock style %}
+<!-- navbar-->
+{% block search%} 
+
+{% endblock search%}
+
+{% block content %}
+<div id="all">
+    <div id="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3">
+            <!--
+            *** PAGES MENU ***
+            _________________________________________________________
+            -->
+            <div class="card sidebar-menu mb-4">
+              <div class="card-header">
+                <h3 class="h4 card-title">Hỗ trợ</h3>
+              </div>
+              <div class="card-body">
+                <ul class="nav nav-pills flex-column">
+                  <li><a href="{% url 'contact:contact'%}" class="nav-link">Liên hệ với chúng tôi</a></li>
+                  <li><a href="{% url 'contact:faq'%}" class="nav-link active">Các câu hỏi thường gặp</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9">
+            <div id="contact" class="box">
+              <h1>Các câu hỏi thường gặp</h1>
+              <p class="lead">Bạn muốn tìm hiểu thêm? Bạn có vấn dề gì với sản phẩm dịch vụ của chúng tôi không?</p>
+              <p>Vui lòng liên hệ với chúng tôi, dịch vụ chăm sóc khách hàng của chúng tôi làm việc cho bạn 24/7.</p>
+              <hr>
+              <div id="accordion">
+                {% for faq in faqs %}
+                <div class="card border-primary mb-3">
+                  <div id="headingOne" class="card-header p-0 border-0">
+                    <h4 class="mb-0"><a href="#" data-toggle="collapse" data-target="#collapseOne{{faq.id}}" aria-expanded="true"
+                      aria-controls="collapseOne{{faq.id}}" class="btn btn-primary d-block text-left rounded-0">{{faq.cauhoi}}</a></h4>
+                  </div>
+                  <div id="collapseOne{{faq.id}}" aria-labelledby="headingOne" data-parent="#accordion" class="collapse">
+                    <div class="card-body">
+                      <p>{{faq.rep}}</p>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <!-- /.accordion-->
+            </div>
+          </div>
+          <!-- /.col-lg-9-->
+          
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock content %}
+

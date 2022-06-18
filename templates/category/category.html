@@ -1,0 +1,255 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}
+    {% if typ == "1" %}Trang điểm {% endif %}
+    {% if typ == "2" %}Dưỡng da {% endif %}
+    {% if typ == "3" %}Thực phẩm chức năng {% endif %}
+{% endblock title %}
+{% block style %}
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css'%}">
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700">
+    <!-- owl carousel-->
+    <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.carousel.css'%}">
+    <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.theme.default.css'%}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static 'style/style.default.css'%}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static 'style/custom.css'%}">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static 'iamge/favicon.png'%}">
+{% endblock style %}
+    <!-- navbar-->
+{% block search%}
+  <form role="search" action="{% url 'category:category' typ=typ cate=cate sx=sx%}" method = "GET" class="ml-auto">
+    <div class="input-group">
+      <input name="q" type="text" placeholder="Search" class="form-control">
+      <div class="input-group-append">
+        <button type="sunmit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+      </div>
+    </div>
+  </form>
+{% endblock search%}
+
+{% block content %}
+    <div id="all">
+      <div id="content">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3">
+              <!--
+              *** MENUS AND FILTERS ***
+              _________________________________________________________
+              -->
+              <div class="card sidebar-menu mb-4">
+                <div class="card-header">
+                  <h3 class="h4 card-title">Thể loại</h3>
+                </div>
+                <div class="card-body">
+                  <ul class="nav nav-pills flex-column category-menu">
+                    <li><a href="{% url 'category:category' typ=1 cate=0 sx=sx%}" 
+                      {% if typ == "1" %}
+                        class="nav-link active"
+                      {% else %}
+                        class="nav-link"
+                      {% endif %}
+                    >Trang điểm<span class="badge badge-light">{{len_td}}</span></a>
+                      <ul class="list-unstyled">
+                        {% if typ == "1" %}
+                          <li><a href="{% url 'category:category' typ=1 cate=0 sx=sx%}" 
+                          {% if cate == 0 %}
+                            class="nav-link"
+                            style = "
+                              background:#b3ffff;
+                            "
+                          {% else %}
+                            class="nav-link"
+                          {% endif %}>Tất cả</a></li>
+                          {% for trangdiem in trangdiems %}
+                            <li><a href="{% url 'category:category' typ=1 cate=trangdiem.id sx=sx%}" 
+                              {% if cate == trangdiem.id %}
+                                class="nav-link"
+                                style = "
+                                  background:#b3ffff;
+                                "
+                              {% else %}
+                                class="nav-link"
+                              {% endif %}>{{trangdiem.tenloaisanpham}}</a></li>
+                          {% endfor %}
+                        {% endif %}
+                      </ul>
+                    </li>
+                    <li><a href="{% url 'category:category' typ=2 cate=0 sx=sx%}" 
+                      {% if typ == "2" %}
+                        class="nav-link active"
+                      {% else %}
+                        class="nav-link"
+                      {% endif %}
+                    >Dưỡng da<span class="badge badge-light">{{len_dd}}</span></a>
+                      <ul class="list-unstyled">
+                        {% if typ == "2" %}
+                          <li><a href="{% url 'category:category' typ=2 cate=0 sx=sx%}" 
+                          {% if cate == 0 %}
+                            class="nav-link"
+                            style = "
+                              background:#b3ffff;
+                            "
+                          {% else %}
+                            class="nav-link"
+                          {% endif %}>Tất cả</a></li>
+                          {% for duongda in duongdas %}
+                            <li><a href="{% url 'category:category' typ=2 cate=duongda.id sx=sx%}" 
+                              {% if cate == duongda.id %}
+                                class="nav-link"
+                                style = "
+                                  background:#b3ffff;
+                                "
+                              {% else %}
+                                class="nav-link"
+                              {% endif %}>{{duongda.tenloaisanpham}}</a></li>
+                          {% endfor %}
+                        {% endif %}
+                      </ul>
+                    </li>
+                    <li><a href="{% url 'category:category' typ=3 cate=0 sx=sx%}" 
+                      {% if typ == "3" %}
+                        class="nav-link active"
+                      {% else %}
+                        class="nav-link"
+                      {% endif %}
+                    >Thực phẩm chức năng<span class="badge badge-light">{{len_tp}}</span></a>
+                      <ul class="list-unstyled">
+                        {% if typ == "3" %}
+                          <li><a href="{% url 'category:category' typ=3 cate=0 sx=sx%}" 
+                          {% if cate == 0 %}
+                            class="nav-link"
+                            style = "
+                              background:#b3ffff;
+                            "
+                          {% else %}
+                            class="nav-link"
+                          {% endif %}>Tất cả</a></li>
+                          {% for tpcn in tpcns %}
+                            <li><a href="{% url 'category:category' typ=3 cate=tpcn.id sx=sx%}" 
+                              {% if cate == tpcn.id %}
+                                class="nav-link"
+                                style = "
+                                  background:#b3ffff;
+                                "
+                              {% else %}
+                                class="nav-link"
+                              {% endif %}>{{tpcn.tenloaisanpham}}</a></li>
+                          {% endfor %}
+                        {% endif %}
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="banner"><a href="#"><img src="{{app.slide_1}}" alt="sales 2014" class="img-fluid"></a></div>
+            </div>
+            {% block detail%}
+              <div class="col-lg-9">
+                <div class="box info-bar"> 
+                  <div class = "row" style = "justify-content: space-between;">
+                    <h1  class="col-md-12 col-lg-7"> 
+                      {% if typ == "1" %}Trang điểm {% endif %}
+                      {% if typ == "2" %}Dưỡng da {% endif %}
+                      {% if typ == "3" %}Thực phẩm chức năng {% endif %}
+                      - {{loai.tenloaisanpham}}
+                    </h1>
+                    <div class=" col-md-12 col-lg-4 "><strong>Sort by</strong>
+                      <select name="sort-by" class="form-control" select = "2" size = "1" onchange = "window.location.href =  this.value">
+                        <option value="{% url 'category:category' typ=typ cate=cate sx=0%}?q={{query}}"
+                        {% if sx == 0%} selected = "selected" {%endif%}>Mới Nhất</option>
+                        <option value="{% url 'category:category' typ=typ cate=cate sx=4%}?q={{query}}"
+                        {% if sx == 4%} selected = "selected" {%endif%}>Đang Sale</option>
+                        <option value="{% url 'category:category' typ=typ cate=cate sx=1%}?q={{query}}"
+                        {% if sx == 1%} selected = "selected" {%endif%}>Giá (tăng dần)</option>
+                        <option value="{% url 'category:category' typ=typ cate=cate sx=2%}?q={{query}}"
+                        {% if sx == 2%} selected = "selected" {%endif%}>Giá (giảm dần)</option>
+                        <option value="{% url 'category:category' typ=typ cate=cate sx=3%}?q={{query}}"
+                        {% if sx == 3%} selected = "selected" {%endif%}>Tên</option>
+                      </select>
+                    </div>
+                  </div>
+                  <p class = "col-md-12 col-lg-7">{{loai.mota}}</p>
+                </div>
+                <div class="row products">
+                  {% for sanpham, pri in sanphams %}
+                    <div class="col-lg-4 col-md-6" style = "height:100%">
+                      <div class="product" >
+                        <div class="flip-container">
+                          <div class="flipper">
+                            <div class="front"><a href="{% url 'product:product' id_pro=sanpham.id%}"><img style = "height: 30vh; width: 100%;" src="{{sanpham.hinhanhsanpham}}" alt="" class="img-fluid"></a></div>
+                            <div class="back"><a href="{% url 'product:product' id_pro=sanpham.id%}"><img style = "height: 30vh; width: 100%;" src="{{sanpham.hinhanhsanpham}}" alt="" class="img-fluid"></a></div>
+                          </div>
+                        </div><a href="{% url 'product:product' id_pro=sanpham.id%}" class="invisible"><img style = "height: 30vh;" src="{{sanpham.hinhanhsanpham}}" alt="" class="img-fluid"></a>
+                        <div class="text">
+                          <h3><a href="{% url 'product:product' id_pro=sanpham.id%}">{{sanpham.tensanpham}}</a></h3>
+                          <p class="price"> 
+                            {% if sanpham.sale == 1 %}
+                              <del>{{sanpham.giasanpham}}k </del> {{pri}}kVND
+                            {% else %}
+                              {{sanpham.giasanpham}}k VND
+                            {% endif %}
+                          </p>
+                          <p class="buttons">
+                            <a href="{% url 'product:product' id_pro=sanpham.id%}" class="btn btn-outline-secondary">Xem chi tiết</a>
+                            <a href="{% url 'category:add_pro_cate' typ=typ cate=cate sx=sx id_pro=sanpham.id is_sale=0%}" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Thêm</a></p>
+                        </div>
+                        {% if sanpham.moi == 1 %}
+                          <!-- /.ribbon-->
+                          <div class="ribbon sale">
+                            <div class="theribbon">NEW</div>
+                            <div class="ribbon-background"></div>
+                          </div>
+                        {% endif %}
+                        <!-- /.text-->
+                        {% if sanpham.sale == 1 %}
+                          <div class="ribbon new">
+                            <div class="theribbon">SALE</div>
+                            <div class="ribbon-background"></div>
+                          </div>
+                        {% endif %}
+                      </div>
+                      <!-- /.product            -->
+                    </div>
+                  {% endfor %}
+                </div>
+                <div class="pages">
+                  <nav aria-label="Page navigation example" class="d-flex justify-content-center" style="height: 8%">
+                    <ul class="pagination">
+                      {% if sanphams.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">&laquo First</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{sanphams.previous_page_number}}">Previous</a></li>
+                      {% endif %}
+                      {% for i in nums %}
+                        <li 
+                          {% if forloop.counter == page %}
+                            class="page-item active"
+                          {% else %}
+                            class="page-item"
+                          {% endif %}><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+                      {% endfor %}
+                      {% if sanphams.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{sanphams.next_page_number}}">Next</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{sanphams.paginator.num_pages}}">Last &raquo</a></li>
+                      {% endif %}
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+            {% endblock detail%}
+            <!-- /.col-lg-9-->
+          </div>
+        </div>
+      </div>
+    </div> 
+{% endblock content %}

@@ -1,0 +1,137 @@
+{% extends 'index.html' %} {% load static %} {% block title %} Đăng ký 
+{% endblock title %} {% block style %}
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="all,follow" />
+<!-- Bootstrap CSS-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}"
+/>
+<!-- Font Awesome CSS-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/font-awesome/css/font-awesome.min.css'%}"
+/>
+<!-- Google fonts - Roboto -->
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700"
+/>
+<!-- owl carousel-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/owl.carousel/assets/owl.carousel.css'%}"
+/>
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/owl.carousel/assets/owl.theme.default.css'%}"
+/>
+<!-- theme stylesheet-->
+<link
+  rel="stylesheet"
+  href="{% static 'style/style.default.css'%}"
+  id="theme-stylesheet"
+/>
+<!-- Custom stylesheet - for your changes-->
+<link rel="stylesheet" href="{% static 'style/custom.css'%}" />
+<!-- Favicon-->
+<link rel="shortcut icon" href="{% static 'iamge/favicon.png'%}" />
+{% endblock style %}
+<!-- navbar-->
+{% block search%} 
+
+{% endblock search%} {% block content %}
+
+<div id="all">
+  <div id="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="box">
+            <h1>Tài Khoản Mới</h1>
+            <p class="lead">Bạn chưa từng là khách hàng của chúng tôi?</p>
+            <p>
+                Với việc đăng ký với chúng tôi thế giới mỹ phẩm mới, giảm giá tuyệt vời và nhiều hơn thế nữa sẽ mở ra cho bạn! Toàn bộ quá trình sẽ không mất quá một phút của bạn!
+            </p>
+            <p class="text-muted">
+                Nếu bạn có bất kỳ câu hỏi nào, xin vui lòng 
+                <a href="#">liên hệ với chúng tôi</a>, trung tâm dịch vụ khách hàng của chúng tôi làm việc cho bạn 24/7.
+            </p>
+            <hr />
+            <form action="{% url 'home:register'%}" method="post">
+                {% csrf_token %}
+                <div class="row g-3 mb-3">
+                    <div class="form-group col-md-6">
+                        <label for="lname" >Họ</label>
+                        <input id="lname" name="lname" type="text" class="form-control" required/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="fname">Tên</label>
+                        <input id="fname" name="fname" type="text" class="form-control" required/>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">Email</label>
+                    <input id="username" name="username" type="email" class="form-control" required/>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mật khẩu</label>
+                    <input id="password" name="password" type="password" class="form-control" required/>
+                </div>
+                <div class="form-group">
+                    <label for="password2">Nhập lại mật khẩu</label>
+                    <input id="password2" name="password2" type="password" onChange="checkPasswordMatch();" class="form-control" required/>
+                    <p style="color:red" id="divCheckPasswordMatch"></p>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-user-md"></i> Đăng ký
+                    </button>
+                </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="box">
+            <h1>Đăng Nhập</h1>
+            <p class="lead">Đã là khách hàng của chúng tôi?</p>
+            <p class="text-muted">
+            </p>
+            <hr />
+            <form action="{% url 'home:login'%}" method="post">
+                {% csrf_token %}
+              <div class="form-group">
+                <label for="username">Email</label>
+                <input id="username" name="username" type="email" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label for="password">Mật khẩu</label>
+                <input id="password" name="password" type="password" class="form-control" />
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa fa-sign-in"></i> Đăng Nhập
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    function checkPasswordMatch() {
+        var password = $("#password").val();
+        var confirmPassword = $("#password2").val();
+     
+        if (password != confirmPassword)
+            $("#divCheckPasswordMatch").html("Passwords do not match!");
+        else
+            $("#divCheckPasswordMatch").html("Passwords match.");
+    }
+</script>
+{% endblock content %}
+

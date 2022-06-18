@@ -1,0 +1,112 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} 
+    Giỏ hàng
+{% endblock title %} 
+
+{% block style %}
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css'%}">
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700">
+    <!-- owl carousel-->
+    <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.carousel.css'%}">
+    <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.theme.default.css'%}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static 'style/style.default.css'%}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static 'style/custom.css'%}">
+    <!-- Leaflet CSS - For the map-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static 'image/favicon.png'%}">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+{% endblock style %}
+<!-- navbar-->
+{% block search%} 
+
+{% endblock search%}
+
+{% block content %}
+<div id="all">
+  <div id="content">
+    <div class="container">
+      <div class="row">
+        <div id="basket" class="col-lg-12">
+          <div class="box">
+            <form method="post" action="checkout1.html">
+              <h1>Shopping cart</h1>
+              <p class="text-muted">You currently have 3 item(s) in your cart.</p>
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th colspan="2">Sản phẩm</th>
+                      <th></th>
+                      <th>Số lượng</th>
+                      <th></th>
+                      <th>Đơn giá</th>
+                      <th colspan=>Tổng</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in listBill %}
+                    <tr>
+                      <td><a href="{% url 'product:product' id_pro=item.idsanpham.id%}"><img src="{{item.idsanpham.hinhanhsanpham}}" alt="{{item.idsanpham.tensanpham}}"></a></td>
+                      <td><a href="{% url 'product:product' id_pro=item.idsanpham.id%}">{{item.idsanpham.tensanpham}}</a></td>
+                      <td><a href="{% url 'user:change' idpro=item.id reduOrIncre=0%}" class="btn btn-danger">Giảm</a></td>
+                      <td>
+                        <input id="username" name="username" type="email" class="form-control" 
+                            value = "{{item.soluong}}"
+                            readonly="readonly"
+                        required>
+                      </td>
+                      <td><a href="{% url 'user:change' idpro=item.id reduOrIncre=1%}" class="btn btn-success">Tăng</a></td>
+                      <td>{{item.idsanpham.giasanpham}} k</td>
+                      <td>{{item.gia}} k</td>
+                      <td><a href="{% url 'user:delPro' idpro=item.id%}"><i class="fa fa-trash-o"></i></a></td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <th colspan="6">Tổng giá trị đơn hàng</th>
+                      <th colspan="2">{{bill.tong}} k</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <!-- /.table-responsive-->
+              <div class="box-footer d-flex justify-content-between flex-column flex-lg-row">
+                <div class="left"><a href=
+                  {% comment %} "javascript:history.go(-1);" {% endcomment %}
+                  "{% url 'category:category' typ=1 cate=0 sx=0%}"
+                   class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i> Tiếp tục mua sắm</a></div>
+                <div class="right">
+                  <a class="btn btn-primary"
+                    {% if cart_sl == 0 %}
+                      href="/" onclick="return false;"
+                    {% else %}
+                      href ="{% url 'user:checkout1' %}"
+                    {% endif %}
+                  >Đặt hàng <i class="fa fa-chevron-right"></i></a>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- /.col-md-3-->
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+

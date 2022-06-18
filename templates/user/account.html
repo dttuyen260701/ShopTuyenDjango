@@ -1,0 +1,184 @@
+{% extends 'index.html' %} {% load static %} 
+{% block title %} Tài khoản {% endblock title %} 
+{% block style %}
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="all,follow" />
+<!-- Bootstrap CSS-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}"
+/>
+<!-- Font Awesome CSS-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/font-awesome/css/font-awesome.min.css'%}"
+/>
+<!-- Google fonts - Roboto -->
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700"
+/>
+<!-- owl carousel-->
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/owl.carousel/assets/owl.carousel.css'%}"
+/>
+<link
+  rel="stylesheet"
+  href="{% static 'vendor/owl.carousel/assets/owl.theme.default.css'%}"
+/>
+<!-- theme stylesheet-->
+<link
+  rel="stylesheet"
+  href="{% static 'style/style.default.css'%}"
+  id="theme-stylesheet"
+/>
+<!-- Custom stylesheet - for your changes-->
+<link rel="stylesheet" href="{% static 'style/custom.css'%}" />
+<!-- Leaflet CSS - For the map-->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css"
+/>
+<!-- Favicon-->
+<link rel="shortcut icon" href="{% static 'image/favicon.png'%}" />
+<!-- Tweaks for older IEs--><!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script
+><![endif]-->
+{% endblock style %}
+<!-- navbar-->
+{% block search%} {% endblock search%} {% block content %}
+<div id="all">
+  <div id="content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-3">
+          <!--
+                *** CUSTOMER MENU ***
+                _________________________________________________________
+                -->
+          <div class="card sidebar-menu">
+            <div class="card-header">
+              <h3 class="h4 card-title">Quản lí tài khoản cá nhân</h3>
+            </div>
+            <div class="card-body">
+              <ul class="nav nav-pills flex-column">
+                <a href="{% url 'user:user'%}" class="nav-link active"
+                  ><i class="fa fa-user"></i> Tài khoản của tôi</a
+                >
+                <a href="{% url 'user:listbill'%}" class="nav-link"
+                  ><i class="fa fa-list"></i> Đơn hàng đã đặt</a
+                >
+                <a href="{% url 'home:logout'%}" class="nav-link"
+                  ><i class="fa fa-sign-out"></i> Đăng xuất</a
+                >
+              </ul>
+            </div>
+          </div>
+          <!-- /.col-lg-3-->
+          <!-- *** CUSTOMER MENU END ***-->
+        </div>
+        <div class="col-lg-9">
+          <div class="box">
+            <h1>Tài khoản của tôi</h1>
+            <p class="lead">
+              Thay đổi thông tin cá nhân của bạn hoặc mật khẩu của bạn tại đây.
+            </p>
+            <p class="text-muted">
+              Tài khoản cá nhân của rất quan trọng và bạn nên hạn chế chia sẻ
+              cho người khác!!
+            </p>
+            <h3 class="mt-5">Personal details</h3>
+            <form action="{% url 'user:update'%}" method="post">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="lname" >Họ</label>
+                    <input id="lname" name="lname"  value = "{{request.user.last_name}}" type="text" class="form-control" required/>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group ">
+                    <label for="fname">Tên</label>
+                    <input id="fname" name="fname"  value = "{{request.user.first_name}}" type="text" class="form-control" required/>
+                  </div>
+                </div>
+              </div>
+              <!-- /.row-->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="email" >Email</label>
+                    <input id="email" value={{request.user.email}} readonly="readonly" type="text" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-md-12 text-center">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-save"></i> Lưu thông tin
+                  </button>
+                </div>
+              </div>
+            </form>
+            <h3>Đổi mật khẩu</h3>
+            <form action="{% url 'user:changepass'%}" method="post">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="password_old">Mật khẩu cũ</label>
+                      <input
+                        id="password_old"
+                        name = 'password_old'
+                        type="password"
+                        class="form-control"
+                      />
+                    </div>
+                  </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="password">Mật khẩu mới</label>
+                    <input id="password" type="password" name='password' class="form-control" />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="password2">Nhập lại mật khẩu mới</label>
+                    <input
+                      id="password2"
+                      type="password"
+                      class="form-control"
+                      onChange="checkPasswordMatch();"
+                    />
+                    <p style="color: red" id="divCheckPasswordMatch"></p>
+                  </div>
+                </div>
+              </div>
+              <!-- /.row-->
+              <div class="col-md-12 text-center">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fa fa-save"></i> Lưu mật khẩu mới
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function checkPasswordMatch() {
+    var password = $("#password").val();
+    var confirmPassword = $("#password2").val();
+
+    if (password != confirmPassword)
+      $("#divCheckPasswordMatch").html("Passwords do not match!");
+    else $("#divCheckPasswordMatch").html("Passwords match.");
+  }
+</script>
+{% endblock content %}

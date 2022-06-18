@@ -1,0 +1,133 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %} 
+    Xác nhận đơn hàng   
+{% endblock title %} 
+
+{% block style %}
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css'%}">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css'%}">
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700">
+    <!-- owl carousel-->
+    <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.carousel.css'%}">
+    <link rel="stylesheet" href="{% static 'vendor/owl.carousel/assets/owl.theme.default.css'%}">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="{% static 'style/style.default.css'%}" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="{% static 'style/custom.css'%}">
+    <!-- Leaflet CSS - For the map-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="{% static 'image/favicon.png'%}">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+{% endblock style %}
+<!-- navbar-->
+{% block search%} 
+
+{% endblock search%}
+
+{% block content %}
+<div id="all">
+  <div id="content">
+    <div class="container">
+        <div class="row">
+            <div id="checkout" class="col-lg-9">
+                <div class="box">
+                  <form method="post" action="{% url 'user:checkout4' %}">
+                    {% csrf_token %}
+                    <h1>Xác nhận đơn hàng - Phương thức thanh toán</h1>
+                    <div class="nav flex-column flex-md-row nav-pills text-center">
+                        <a href="{% url 'user:checkout1' %}" class="nav-link flex-sm-fill text-sm-center"> <i class="fa fa-map-marker"></i>Địa chỉ</a>
+                        <a href="{% url 'user:checkout2' %}" class="nav-link flex-sm-fill text-sm-center "> <i class="fa fa-truck"></i>Phương thức vận chuyển</a>
+                        <a href="#" class="nav-link flex-sm-fill text-sm-center active"> <i class="fa fa-money"></i>Phương thức thanh toán</a>
+                        <a href="#" class="nav-link flex-sm-fill text-sm-center disabled"> <i class="fa fa-eye"></i>Xác nhận đặt hàng</a>
+                    </div>
+                    <div class="content py-3">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="box payment-method">
+                              <h4>Ví điện tử</h4>
+                              <p>Bao gồm Momo hoặc VN Pay số tài khoản {{app.phone}}.</p>
+                              <p>Nội dung chuyển khoản vui lòng cho chúng tôi biết mail của bạn.</p>
+                              <div class="box-footer text-center">
+                                <input type="radio" name="payment" value="1"
+                                {% if bill.pay_method == 1 %} checked="checked" {% endif %}>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="box payment-method">
+                              <h4>Tài khoản ngân hàng</h4>
+                              <p>Vui lòng chuyển khoản cho chúng tôi vào số tài khoản xxxxx BIDV.</p>
+                              <p>Nội dung chuyển khoản vui lòng cho chúng tôi biết mail của bạn.</p>
+                              <div class="box-footer text-center">
+                                <input type="radio" name="payment" value="2"
+                                {% if bill.pay_method == 2 %} checked="checked" {% endif %}>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="box payment-method">
+                              <h4>Thanh toán khi nhận hàng</h4>
+                              <p>Bạn sẽ thanh toán khi đơn hàng được giao đến bạn.</p>
+                              <div class="box-footer text-center">
+                                <input type="radio" name="payment" value="3"
+                                {% if bill.pay_method == 3 %} checked="checked" {% endif %}>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="box-footer d-flex justify-content-between">
+                            <a href="{% url 'user:checkout2' %}" class="btn btn-outline-secondary"><i class="fa fa-chevron-left"></i>Quay về chọn phương thức vận chuyển</a>
+                            <button type="submit" class="btn btn-primary">Tiếp tục đến xác nhận đặt hàng<i class="fa fa-chevron-right"></i></button>
+                          </div>
+                        <!-- /.row-->
+                    </div>
+                  </form>
+                </div>
+                <!-- /.box-->
+            </div>
+ 
+            <div class="col-lg-3">
+                <div id="order-summary" class="card">
+                  <div class="card-header">
+                    <h3 class="mt-4 mb-4">Tổng quan về đơn hàng</h3>
+                  </div>
+                  <div class="card-body">
+                    <p class="text-muted">Phí ship sẽ tùy vào phương thức bạn chọn giao hàng và địa chỉ của bạn.</p>
+                    <div class="table-responsive">
+                      <table class="table">
+                        <tbody>
+                          <tr>
+                            <td>Tổng sản phẩm</td>
+                            <th>{{tong_sp}}k</th>
+                          </tr>
+                          <tr>
+                            <td>Phí ship</td>
+                            <th>{{bill.ship}}k</th>
+                          </tr>
+                          <tr class="total">
+                            <td>Tổng</td>
+                            <th>{{bill.tong}}k</th>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
