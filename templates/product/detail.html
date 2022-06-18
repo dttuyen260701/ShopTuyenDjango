@@ -36,7 +36,7 @@
         <p class="price">
           {% if sanpham.sale == 1 %}
             <del>{{sanpham.giasanpham}}k </del>
-          {% endif %}{{sale_price}}kVND
+          {% endif %}{{sale_price}}k VND
         </p>
         <p class="text-center buttons">
           <a href="{% url 'product:addproduct' id_pro=sanpham.id%}" class="btn btn-primary"
