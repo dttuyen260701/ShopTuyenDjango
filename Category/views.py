@@ -88,7 +88,7 @@ def salingday(request, sx):
                'sanphams':list_res, 'nums':nums, 'page':int(page), 'query':q, 'cart_sl':cart_sl}
     return render(request, 'category/sale_product.html', context)
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def addproduct_cate(request, typ, cate, sx, id_pro, is_sale):#1 la cho sale, 0 la cate
     app = App.objects.get(id = 1)
     bill = Donhang.objects.filter(Q(idkhachhang_id=request.user.id) & 

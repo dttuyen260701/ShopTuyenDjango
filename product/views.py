@@ -33,7 +33,7 @@ def product(request, id_pro):
                 'loai':loai, 'sx':0, 'sanpham':sanpham, 'saling':saling, 'category_pro':category_pro}
     return render(request, 'product/detail.html', context)
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def addproduct(request, id_pro):
     app = App.objects.get(id = 1)
     bill = Donhang.objects.filter(Q(idkhachhang_id=request.user.id) & 

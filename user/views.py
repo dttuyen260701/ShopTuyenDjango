@@ -12,7 +12,7 @@ from home.billform import BillForm
 
 
 # Create your views here.
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def user(request):
     cart_sl = 0
     bill = Donhang.objects.filter(Q(idkhachhang_id=request.user.id) & 
@@ -28,7 +28,7 @@ def user(request):
             'duongdas':duongdas, 'tpcns':tpcns, 'cart_sl':cart_sl}
     return render(request, 'user/account.html', context)
  
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def changepass(request):
     if request.method == 'POST':
         newpass = request.POST.get('password')
@@ -44,7 +44,7 @@ def changepass(request):
             return render(request, 'error.html', {'error': "Sai mật khẩu!"})    
     return redirect('user:user')
  
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def update(request):
     if request.method == 'POST':
         lname = request.POST.get('lname')
@@ -55,7 +55,7 @@ def update(request):
         user.save()   
     return redirect('user:user')
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def listbill(request):
     app = App.objects.get(id = 1)
     cart_sl = 0
@@ -74,14 +74,14 @@ def listbill(request):
             'duongdas':duongdas, 'tpcns':tpcns, 'listBill':listBill}
     return render(request, 'user/listbill.html', context)
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def updatebill(request, idBill, status):
     bill = Donhang.objects.get(id=idBill)
     bill.status = status
     bill.save()
     return redirect('user:billdetails', idBill)
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def billdetails(request, idBill):
     app = App.objects.get(id = 1)
     cart_sl = 0
@@ -101,7 +101,7 @@ def billdetails(request, idBill):
             'idBill':idBill, 'bill':bill, 'tong_sp':tong_sp}
     return render(request, 'user/billdetails.html', context)
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def showcart(request):
     app = App.objects.get(id = 1)
     cart_sl = 0
@@ -121,7 +121,7 @@ def showcart(request):
             'bill':bill[0], 'tong_sp':tong_sp, 'cart_sl':cart_sl}
     return render(request, 'user/cart.html', context)
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def change(request, idpro, reduOrIncre):#tang la 1 giam la 0 
     app = App.objects.get(id = 1)
     cart_sl = 0
@@ -145,7 +145,7 @@ def change(request, idpro, reduOrIncre):#tang la 1 giam la 0
     bill_get.save()
     return redirect('user:cart')
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def delPro(request, idpro):
     app = App.objects.get(id = 1)
     product = Chitietdonhang.objects.get(id=idpro)
@@ -162,7 +162,7 @@ def delPro(request, idpro):
     bill_get.save()
     return redirect('user:cart')
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def checkout_address(request):
     cart_sl = 0
     bill = Donhang.objects.filter(Q(idkhachhang_id=request.user.id) & 
@@ -187,7 +187,7 @@ def checkout_address(request):
             'thanhpho':thanhpho}
     return render(request, 'user/checkout.html', context)
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def checkout_ship(request):
     cart_sl = 0
     bill = Donhang.objects.filter(Q(idkhachhang_id=request.user.id) & 
@@ -211,7 +211,7 @@ def checkout_ship(request):
             'duongdas':duongdas, 'tpcns':tpcns, 'cart_sl':cart_sl, 'bill': bill_value}
     return render(request, 'user/checkout2.html', context)
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def checkout_pay(request):
     app = App.objects.get(id = 1)
     cart_sl = 0
@@ -246,7 +246,7 @@ def checkout_pay(request):
             'duongdas':duongdas, 'tpcns':tpcns, 'cart_sl':cart_sl, 'bill': bill_value}
     return render(request, 'user/checkout3.html', context)
     
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def checkout_confirm(request):
     app = App.objects.get(id = 1)
     cart_sl = 0
@@ -268,7 +268,7 @@ def checkout_confirm(request):
             'duongdas':duongdas, 'tpcns':tpcns, 'cart_sl':cart_sl, 'bill': bill_value}
     return render(request, 'user/checkout4.html', context)
 
-@login_required(login_url='/login')
+@login_required(login_url='/register')
 def done_checkout(request):
     app = App.objects.get(id = 1)
     cart_sl = 0
